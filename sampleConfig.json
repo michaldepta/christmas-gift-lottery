@@ -1,0 +1,27 @@
+{
+    "participants": [{
+        "name": "Ania",
+        "contact": ""
+    }, {
+        "name": "Kasia",
+        "contact": ""
+    }, {
+        "name": "Janek",
+        "contact": ""
+    }, {
+        "name": "Franek",
+        "contact": ""
+    }],
+    "forbiddenGroups": [
+        ["Kasia", "Janek"]
+    ],
+    "smtpConfig": {
+        "host": "smtp.example.com",
+        "port": 465,
+        "secure": true,
+        "auth": {
+            "user": "",
+            "pass": ""
+        }
+    }
+}
