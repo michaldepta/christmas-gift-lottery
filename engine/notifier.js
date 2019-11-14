@@ -1,12 +1,12 @@
 const nodemailer = require('nodemailer');
 
 const sendNotificaitons = (config, assignments) => {
-    const defaults = {
-        from: '"Automat Prezentowy" <automat-prezentowy@wp.pl>',
-        subject: 'Wyniki losowania prezentowego',
-    };
 
-    const transporter = nodemailer.createTransport(config.smtpConfig, defaults);    
+    const smtpOptions = {
+        from: config.smtpConfig.sender,
+        subject: config.smtpConfig.subject
+    };
+    const transporter = nodemailer.createTransport(config.smtpConfig, smtpOptions);    
 
     const sendMessage = (name, address, assignedPerson) => {
         const mailOptions = {
@@ -32,4 +32,30 @@ const sendNotificaitons = (config, assignments) => {
             assignments.find(assignment => assignment.from === person.name).to)));
 };
 
-module.exports = { sendNotificaitons };
+const sendResults = (config, assignments, encode) => {
+    const smtpOptions = {
+        from: config.smtpConfig.sender,
+        subject: 'Wyniki'
+    };
+    const transporter = nodemailer.createTransport(config.smtpConfig, smtpOptions);   
+
+    const results = encode
+        ? Buffer.from(JSON.stringify(assignments)).toString('base64')
+        : JSON.stringify(assignments);
+
+    const mailOptions = {
+        to: config.adminMail,
+        text: `Wyniki losowania: \n ${results}`
+    };
+    return new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            })
+    })
+}
+
+module.exports = { sendNotificaitons, sendResults };

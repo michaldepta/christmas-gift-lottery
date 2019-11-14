@@ -6,7 +6,7 @@
   "author": "Michał",
   "license": "MIT",
   "scripts": {
-    "run": "node index.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "nodemailer": "^4.7.0",
