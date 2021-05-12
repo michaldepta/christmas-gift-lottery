@@ -9,7 +9,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "nodemailer": "^4.7.0",
+    "nodemailer": "^6.4.16",
     "yargs": "^12.0.5"
   }
 }
