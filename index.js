@@ -8,5 +8,8 @@ if (process.argv.length < 3) {
     const config = require(path.resolve(process.argv[2]));
     const result = randomizeAssignments(config);
 
-    sendResults(config, result, true).then(() => sendNotificaitons(config, result));
+    sendResults(config, result, true).then(
+        () => sendNotificaitons(config, result)
+        //() => console.log(result)
+    );
 }

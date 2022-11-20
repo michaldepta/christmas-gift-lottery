@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "nodemailer": "^6.4.16",
+    "nodemailer-sendgrid": "^1.0.3",
     "yargs": "^12.0.5"
   }
 }

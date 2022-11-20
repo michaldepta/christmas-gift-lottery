@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const nodemailerSendgrid = require('nodemailer-sendgrid');
 
 const sendNotificaitons = (config, assignments) => {
 
@@ -6,10 +7,16 @@ const sendNotificaitons = (config, assignments) => {
         from: config.smtpConfig.sender,
         subject: config.smtpConfig.subject
     };
-    const transporter = nodemailer.createTransport(config.smtpConfig, smtpOptions);    
+
+    const transporter = nodemailer.createTransport(
+        nodemailerSendgrid({
+             apiKey: config.smtpConfig.auth.sendgridKey
+          })
+        ); 
 
     const sendMessage = (name, address, assignedPerson) => {
         const mailOptions = {
+            ...smtpOptions,
             to: address,
             text: `Cześć ${name}! Osoba, której sprawiasz prezent pod choinkę to: ${assignedPerson}. Wesołych Świąt!`
         };
@@ -35,15 +42,20 @@ const sendNotificaitons = (config, assignments) => {
 const sendResults = (config, assignments, encode) => {
     const smtpOptions = {
         from: config.smtpConfig.sender,
-        subject: 'Wyniki'
+        subject: 'Wyniki - kopia'
     };
-    const transporter = nodemailer.createTransport(config.smtpConfig, smtpOptions);   
+    const transporter = nodemailer.createTransport(
+        nodemailerSendgrid({
+             apiKey: config.smtpConfig.auth.sendgridKey
+          })
+        );
 
     const results = encode
         ? Buffer.from(JSON.stringify(assignments)).toString('base64')
         : JSON.stringify(assignments);
 
     const mailOptions = {
+        ...smtpOptions,
         to: config.adminMail,
         text: `Wyniki losowania: \n ${results}`
     };
